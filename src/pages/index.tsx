@@ -1,7 +1,5 @@
 import Head from 'next/head'
-import { Inter } from '@next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
+import styles from '../styles/styles.module.scss'
 
 export default function Home() {
   return (
@@ -10,9 +8,52 @@ export default function Home() {
           <title>My DashBoard</title>
         </Head>
 
-        <div>
-          <h1>Ola, mundo</h1>
-        </div>
+        <main className={styles.contentContainer}>
+          <img src="/images/board-user.svg" alt="Ferramente board" />
+
+          <section className={styles.callToAction}>
+            <h1>Uma ferramente para o seu dia. Escreva, planeje e organize-se...</h1>
+            <p>
+              <span>100% gratuita</span> e online
+            </p>
+          </section>
+
+          <p className={styles.donatersTitle}>Apoiadores:  </p>
+          <div className={styles.donaters}>
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+            <img src="https://sujeitoprogramador.com/steve.png" alt="usuario" />
+          </div>
+        </main>
     </>
 
   )
