@@ -2,6 +2,7 @@ import Head from "next/head"
 import styles from './styles.module.scss'
 
 import { FiPlus, FiCalendar, FiEdit2, FiTrash, FiClock } from "react-icons/fi"
+import { SupportButton } from "@/components/SupportButton"
 
 export default function Board(){
   return (
@@ -12,7 +13,7 @@ export default function Board(){
 
       <main className={styles.container}>
         <form>
-          <input type="text" placeholder="Digite sua tarefa" />
+          <input type="text" placeholder="Crie sua tarefa" />
           <button type="submit">
             <FiPlus size={25} color='#17181f'></FiPlus>
           </button>
@@ -62,7 +63,7 @@ export default function Board(){
         </div>
       </div>
 
-
+    <SupportButton/>
     </>
   )
 }
