@@ -10,7 +10,7 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
       authorization: {
         params: {
-          scope: 'read:user'
+          scope: 'read:user user:email'
         }
       }
     }),
@@ -21,6 +21,7 @@ export const authOptions: AuthOptions = {
       ...session,
       profile
     }),
+
     signIn: async ({user, account, profile}: any) => {
       try {
         return true

@@ -1,3 +1,4 @@
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import styles from '../styles/styles.module.scss'
 
@@ -57,4 +58,19 @@ export default function Home() {
     </>
 
   )
+}
+
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+
+    },
+    revalidate: 60 * 60 /* a página será gerada no primeiro acesso, ou seja, ela será gerada no servidor
+    e quando os demais usuários acessarem a página, eles visualizaram a página estática. Porém, dentro de uma hora
+    a página será revalidada e se por acaso houve uma atualização nas informações/elementos, ela será regerada,
+    se mantendo estática por mais uma hora
+    */
+
+  }
 }
