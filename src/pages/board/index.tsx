@@ -72,6 +72,21 @@ export default function Board({ user, taskData }: BoardProps){
         .catch((err) => console.error(err))
   }
 
+  async function handleDeleteTask(id: string){
+    await firebase.firestore()
+        .collection('tasks')
+        .doc(id)
+        .delete()
+        .then(() => {
+          console.log('Deletado com sucesso')
+          let taskDeleted = taskList.filter(item => {
+            return item.id !== id
+          })
+          setTaskList(taskDeleted)
+        })
+        .catch((err) => console.log(err))
+  }
+
   return (
     <>
       <Head>
@@ -93,12 +108,13 @@ export default function Board({ user, taskData }: BoardProps){
         </form>
 
         <h1>
-          Você tem {taskList.length} {taskList.length === 1 ? 'tarefas': 'tarefa'}
+          Você tem {taskList.length} {taskList.length === 1 ? 'tarefa': 'tarefas'}
         </h1>
 
         <section>
           {taskList.map(task => (
-            <article className={styles.taskList}>
+            <article className={styles.taskList} key={task.id}>
+            {/* Sempre que houver um map, sera necessario utiliza a prop key o elemento pai, conforme acima */}
               <Link href={`/board/task/${task.id}`}>
                 <p>{task.task}</p>
               </Link>
@@ -117,7 +133,7 @@ export default function Board({ user, taskData }: BoardProps){
                   </button>
                 </div>
 
-                <button>
+                <button onClick={() => handleDeleteTask(task.id)}>
                   <FiTrash size={20} color='#FF3636'/>
                   <span>Excluir</span>
                 </button>
