@@ -6,6 +6,9 @@ import { FiPlus, FiCalendar, FiEdit2, FiTrash, FiClock } from "react-icons/fi"
 import { SupportButton } from "@/components/SupportButton"
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
+import Link from "next/link"
+import { format } from "date-fns"
+
 
 import firebase from '../../services/firebaseConnection'
 
@@ -21,6 +24,9 @@ interface BoardProps {
 export default function Board({ user }: BoardProps){
 
   const [input, setInput] = useState('')
+  const [taskList, setTaskList] = useState([])
+
+
 
   async function handleAddTask(event: FormEvent){
     event.preventDefault()
@@ -39,6 +45,19 @@ export default function Board({ user }: BoardProps){
         })
         .then((doc) => {
           console.log('Cadastrado com sucesso')
+          let data = {
+            id: doc.id,
+            createdAt: new Date(),
+            createdAtFormatted: format(new Date(), 'dd MMMM yyyy'),
+            task: input,
+            userEmail: user.email,
+            name: user.name
+          }
+
+          setTaskList([...taskList, data])
+          setInput('')
+
+
         })
         .catch((err) => console.error(err))
 
@@ -71,33 +90,37 @@ export default function Board({ user }: BoardProps){
         <h1>Voce tem 2 tarefas</h1>
 
         <section>
-          <article className={styles.taskList}>
-            <p>Aprender criar projetos usando NextJS e aplicando firebase como back</p>
+          {taskList.map(task => (
+            <article className={styles.taskList}>
+              <Link href={`/board/task/${task.id}`}>
+                <p>{task.task}</p>
+              </Link>
 
-            <div className={styles.actions}>
-              <div>
+
+              <div className={styles.actions}>
                 <div>
-                  <FiCalendar size={20} color='#FFB800'/>
-                  <time>20 de Janeiro de 2023</time>
+                  <div>
+                    <FiCalendar size={20} color='#FFB800'/>
+                    <time>{task.createdAtFormatted}</time>
+                  </div>
+
+                  <button>
+                    <FiEdit2 size={20} color='#FFF'/>
+                    <span>Editar</span>
+                  </button>
                 </div>
 
                 <button>
-                  <FiEdit2 size={20} color='#FFF'/>
-                  <span>Editar</span>
+                  <FiTrash size={20} color='#FF3636'/>
+                  <span>Excluir</span>
                 </button>
+
               </div>
+            </article>
+          ))}
 
-            <button>
-              <FiTrash size={20} color='#FF3636'/>
-              <span>Excluir</span>
-            </button>
-
-            </div>
-
-          </article>
         </section>
       </main>
-
 
       <div className={styles.vipContainer}>
         <h3>Obrigado por apoiar esse projeto</h3>
