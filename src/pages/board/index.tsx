@@ -12,19 +12,29 @@ import { format } from "date-fns"
 
 import firebase from '../../services/firebaseConnection'
 
+interface TaskList {
+  id: string
+  createdAt: string | Date
+  createdAtFormatted: string
+  task: string
+  userEmail: string
+  userName: string
+}
+
 
 interface BoardProps {
   user: {
     email: string
     name: string
-  }
+  },
+  taskData: string
 }
 
 
-export default function Board({ user }: BoardProps){
+export default function Board({ user, taskData }: BoardProps){
 
   const [input, setInput] = useState('')
-  const [taskList, setTaskList] = useState([])
+  const [taskList, setTaskList] = useState<TaskList[]>(JSON.parse(taskData))
 
 
 
@@ -60,9 +70,6 @@ export default function Board({ user }: BoardProps){
 
         })
         .catch((err) => console.error(err))
-
-
-
   }
 
   return (
@@ -85,7 +92,9 @@ export default function Board({ user }: BoardProps){
           </button>
         </form>
 
-        <h1>Voce tem 2 tarefas</h1>
+        <h1>
+          Você tem {taskList.length} {taskList.length === 1 ? 'tarefas': 'tarefa'}
+        </h1>
 
         <section>
           {taskList.map(task => (
@@ -149,6 +158,23 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     }
   }
 
+  const tasks = await firebase.firestore()
+                      .collection('tasks')
+                      .where('userEmail', '==', session.user.email)
+                      .orderBy('created', 'asc')
+                      .get()
+
+
+  const taskData =  JSON.stringify(tasks.docs.map(task => {
+    return {
+      id: task.id,
+      createdAtFormatted: format(task.data().created.toDate(), 'dd MMMM yyyy'),
+      ...task.data()
+    }
+  }))
+
+
+
   const user = {
     name: session.user.name,
     email: session.user.email
@@ -156,7 +182,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   return {
     props: {
-      user
+      user,
+      taskData
     }
   }
 }
