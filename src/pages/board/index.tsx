@@ -85,8 +85,6 @@ export default function Board({ user }: BoardProps){
           </button>
         </form>
 
-
-
         <h1>Voce tem 2 tarefas</h1>
 
         <section>
@@ -128,7 +126,7 @@ export default function Board({ user }: BoardProps){
           <FiClock size={28} color='#fff'/>
 
           <time>
-            Ultima doacao foi ha 3 dias
+            Última doação foi há 3 dias
           </time>
         </div>
       </div>
