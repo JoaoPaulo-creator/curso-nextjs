@@ -61,7 +61,7 @@ export default function Board({ user, taskData }: BoardProps){
             createdAtFormatted: format(new Date(), 'dd MMMM yyyy'),
             task: input,
             userEmail: user.email,
-            name: user.name
+            userName: user.name
           }
 
           setTaskList([...taskList, data])
