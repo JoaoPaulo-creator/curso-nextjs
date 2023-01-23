@@ -2,7 +2,7 @@ import Head from "next/head"
 import styles from './styles.module.scss'
 
 import { useState, FormEvent } from 'react'
-import { FiPlus, FiCalendar, FiEdit2, FiTrash, FiClock } from "react-icons/fi"
+import { FiPlus, FiCalendar, FiEdit2, FiTrash, FiClock, FiX } from "react-icons/fi"
 import { SupportButton } from "@/components/SupportButton"
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
@@ -35,7 +35,7 @@ export default function Board({ user, taskData }: BoardProps){
 
   const [input, setInput] = useState('')
   const [taskList, setTaskList] = useState<TaskList[]>(JSON.parse(taskData))
-
+  const [taskEdit, setTaskEdit] = useState<TaskList | null>(null)
 
 
   async function handleAddTask(event: FormEvent){
@@ -44,6 +44,30 @@ export default function Board({ user, taskData }: BoardProps){
       alert('Preencha alguma tarefa')
       return // esse return serve para que execução desta função seja parada
     }
+
+    if(taskEdit){
+      await firebase.firestore().collection('tasks')
+      .doc(taskEdit.id)
+      .update({
+        task: input
+      })
+      .then(() => {
+        // atualizando o estado da lista de tarefas, quando uma delas for editada
+        let data = taskList
+        let taskIndex = taskList.findIndex(item => item.id === taskEdit.id)
+
+        data[taskIndex].task = input
+
+        setTaskList(data)
+        setTaskEdit(null)
+        setInput('')
+      })
+      .catch((err) => console.error(err))
+
+      return // retornando para que nao continue executando e crie uma nova task
+    }
+
+
 
     await firebase.firestore()
         .collection('tasks')
@@ -87,6 +111,16 @@ export default function Board({ user, taskData }: BoardProps){
         .catch((err) => console.log(err))
   }
 
+  async function handleEditTask(task: TaskList) {
+    setTaskEdit(task)
+    setInput(task.task)
+  }
+
+  async function handleCancelEdit() {
+    setInput('')
+    setTaskEdit(null)
+  }
+
   return (
     <>
       <Head>
@@ -94,6 +128,19 @@ export default function Board({ user, taskData }: BoardProps){
       </Head>
 
       <main className={styles.container}>
+
+        {taskEdit && (
+          <span className={styles.warnText}>
+            <button onClick={handleCancelEdit}>
+              <FiX size={30} color="#ff3636"/>
+            </button>
+            Você está estidando uma tarefa!
+          </span>
+        )}
+
+
+
+
         <form onSubmit={handleAddTask}>
           <input
             type="text"
@@ -127,7 +174,7 @@ export default function Board({ user, taskData }: BoardProps){
                     <time>{task.createdAtFormatted}</time>
                   </div>
 
-                  <button>
+                  <button onClick={() => handleEditTask(task)}>
                     <FiEdit2 size={20} color='#FFF'/>
                     <span>Editar</span>
                   </button>
