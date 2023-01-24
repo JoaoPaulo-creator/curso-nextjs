@@ -1,0 +1,42 @@
+.container {
+  max-width: 1120px;
+  margin: 2rem auto; /* auto serve para centralizar meus elementos */
+  padding: 2rem;
+  background-color: #17181f;
+  border-radius: 8px;
+
+
+  p {
+    color: #f2f6fc;
+    font-size: 16px;
+    line-height: 150%; /* sets the height of a line box.
+    It's commonly used to set the distance between lines of text.*/
+  }
+
+  .actions {
+    margin-top: 16px;
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      align-items: center;
+
+      span {
+        font-size: 1.5rem;
+        color: #fff;
+        margin: 0 5px;
+      }
+
+      time {
+        color: #ffb800;
+        margin-right: 16px;
+        font-size: 24px;
+      }
+
+    }
+
+  }
+}
