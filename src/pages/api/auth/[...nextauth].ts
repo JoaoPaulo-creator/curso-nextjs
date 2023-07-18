@@ -1,37 +1,34 @@
-import NextAuth, { AuthOptions } from "next-auth"
-import GithubProvider from "next-auth/providers/github"
-
+import NextAuth, { AuthOptions } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
 
 export const authOptions: AuthOptions = {
-
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
+      secret: process.env.NEXT_PUBLIC_SECRET,
       authorization: {
         params: {
-          scope: 'read:user user:email'
-        }
-      }
+          scope: "read:user user:email",
+        },
+      },
     }),
   ],
 
   callbacks: {
     session: async ({ session, profile }: any) => ({
       ...session,
-      profile
+      profile,
     }),
 
-    signIn: async ({user, account, profile}: any) => {
+    signIn: async ({ user, account, profile }: any) => {
       try {
-        return true
+        return true;
       } catch (error) {
-        return false
+        return false;
       }
-    }
-  }
+    },
+  },
+};
 
-
-}
-
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);
